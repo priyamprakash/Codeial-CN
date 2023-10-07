@@ -14,9 +14,9 @@ router.get('/sign-in', usersController.signIn);
 router.post('/create', usersController.create);
 
 //use passport as middleware for authentication
-router.post('/create-session', passport.authenticate(
-    'local',
-    {failureRedirect: '/users/sign-in'}
-    ), usersController.createSession);
+router.post('/create-session', passport.authenticate('local',{failureRedirect: '/users/sign-in'}), usersController.createSession);
+
+router.get('/sign-out', usersController.destroySession);
+
 
 module.exports = router;
