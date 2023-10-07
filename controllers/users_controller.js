@@ -1,4 +1,4 @@
-const User = require('../models/users')
+const User = require('../models/user')
 
 module.exports.profile = function(req, res){
     return res.render('user_profile', {
@@ -48,5 +48,5 @@ module.exports.create = async function(req, res){
 
 // sign in and create a session for the user
 module.exports.createSession = function(req, res){
-    // TODO later
+    return res.redirect('/')
 }
