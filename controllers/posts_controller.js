@@ -1,23 +1,21 @@
 const Post = require('../models/post')
 const Comment = require('../models/comment')
 
-module.exports.create = function(req, res){
-    Post.create({
-        content: req.body.content,
-        user: req.user._id
-    })
-    // use then() to handle the resolved promise
-    .then(function(post){
-        // if no error, return the response
+module.exports.create = async function(req, res){
+    try {
+        await Post.create({
+            content: req.body.content,
+            user: req.user._id
+        });
+        req.flash('success', 'Post Published');
+
         return res.redirect('back');
-    })
-    // use catch() to handle the rejected promise
-    .catch(function(err){
-        // if there is an error, handle it
-        console.log('error in creating a post');
-        return res.status(500).send({message: 'Something went wrong'});
-    });
+    } catch(err) {
+        req.flash('error', err);
+        return res.redirect('back');
+    }
 }
+
 
 
 module.exports.destroy = async function(req, res){
@@ -29,13 +27,16 @@ module.exports.destroy = async function(req, res){
 
             await Comment.deleteMany({post: req.params.id});
 
+            req.flash('success', 'Post and associated comments deleted');
+
             return res.redirect('back');
         } else {
+            req.flash('error', 'You cannot delete this post');
             return res.redirect('back');
         }
     } catch(err) {
-        console.error(err);
-        // handle error
+        req.flash('error', err);
+        return res.redirect('back');
     }
 }
 

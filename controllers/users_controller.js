@@ -14,6 +14,20 @@ module.exports.profile = async function(req, res){
 }
 
 
+module.exports.update = async function(req, res){
+    if(req.user.id == req.params.id){
+        try {
+            await User.findByIdAndUpdate(req.params.id, req.body);
+            return res.redirect('back');
+        } catch(err) {
+            console.error(err);
+            // handle error
+        }
+    }else{
+        return res.status(401).send('Unauthorized');
+    }
+}
+
 
 // render the sign up page
 module.exports.signUp = function(req, res){
@@ -64,13 +78,14 @@ module.exports.create = async function(req, res){
 
 // sign in and create a session for the user
 module.exports.createSession = function(req, res){
-    return res.redirect('/')
+    req.flash('success', 'Logged in Successfully');
+    return res.redirect('/');
 }
-
-
-
 
 module.exports.destroySession = function(req, res){
     req.logout();
+    req.flash('success', 'You have logged out!');
+
+
     return res.redirect('/');
 }

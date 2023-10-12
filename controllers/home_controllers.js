@@ -22,5 +22,6 @@ module.exports.home = async function(req, res){
     } catch(err) {
         console.error(err);
         // handle error
+        return;
     }
 }
