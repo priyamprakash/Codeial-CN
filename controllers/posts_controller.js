@@ -42,10 +42,10 @@ module.exports.destroy = async function(req, res){
                     data: {
                         post_id: req.params.id
                     },
-                    message: "Post deleted"
+                    message: "Post deleted succesfully"
                 });
             }
-            
+
             req.flash('success', 'Post and associated comments deleted');
 
             return res.redirect('back');
